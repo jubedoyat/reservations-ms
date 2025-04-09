@@ -16,12 +16,9 @@ def decode_token(token: str) -> dict:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 async def get_current_user_id(token: str = Depends(oauth2_scheme)) -> str:
-    print("🔐 Received token:", token)
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         user_id = payload.get("sub")
-        print("✅ Token decoded. User ID:", user_id)
         return user_id
     except JWTError as e:
-        print("❌ Token error:", e)
         raise HTTPException(status_code=401, detail="Invalid or expired token")
