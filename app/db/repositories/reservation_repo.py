@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List, Optional
 from bson import ObjectId
-from app.models.reservation import ReservationCreate, ReservationUpdate, ReservationInDB
+from app.models.reservation import ReservationUpdate, ReservationInDB
 
 
 def normalize_mongo_id(doc: dict) -> dict:
@@ -26,11 +26,10 @@ class ReservationRepository:
             reservations.append(ReservationInDB(**normalize_mongo_id(doc)))
         return reservations
 
-    async def create(self, reservation: ReservationCreate) -> ReservationInDB:
-        doc = reservation.model_dump()
-        result = await self.collection.insert_one(doc)
-        doc["_id"] = str(result.inserted_id)
-        return ReservationInDB(**doc)
+    async def create(self, reservation: dict) -> ReservationInDB:
+        result = await self.collection.insert_one(reservation)
+        reservation["_id"] = str(result.inserted_id)
+        return ReservationInDB(**reservation)
 
     async def update(self, reservation_id: str, update_data: ReservationUpdate) -> Optional[ReservationInDB]:
         if not ObjectId.is_valid(reservation_id):
