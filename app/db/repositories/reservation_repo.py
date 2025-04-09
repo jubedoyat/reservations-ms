@@ -20,6 +20,12 @@ class ReservationRepository:
         doc = await self.collection.find_one({"_id": ObjectId(reservation_id)})
         return ReservationInDB(**normalize_mongo_id(doc)) if doc else None
 
+    async def list_by_user(self, user_id: str) -> List[ReservationInDB]:
+        reservations = []
+        async for doc in self.collection.find({"user_id": user_id}):
+            reservations.append(ReservationInDB(**normalize_mongo_id(doc)))
+        return reservations
+
     async def list(self) -> List[ReservationInDB]:
         reservations = []
         async for doc in self.collection.find():

@@ -21,9 +21,12 @@ async def validate_external_ids(user_id: str, flight_id: str):
             raise HTTPException(status_code=400, detail="Flight not found")
 
 @router.get("/", response_model=List[ReservationPublic])
-async def list_reservations(db: AsyncIOMotorDatabase = Depends(get_database)):
+async def list_reservations(
+    db: AsyncIOMotorDatabase = Depends(get_database),
+    user_id: str = Depends(get_current_user_id)
+):
     repo = ReservationRepository(db)
-    reservations = await repo.list()
+    reservations = await repo.list_by_user(user_id)
     return [ReservationPublic(**r.model_dump()) for r in reservations]
 
 @router.get("/auth-debug")
