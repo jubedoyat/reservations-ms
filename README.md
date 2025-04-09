@@ -2,7 +2,7 @@
 
 Este microservicio gestiona las reservas hechas por los usuarios para vuelos específicos.
 
-> **Importante:** Los microservicios `users-ms` y `flights-ms` deben estar en ejecución antes de utilizar los endpoints de este microservicio.
+> **Importante:** Los microservicios `users-ms` y `flights-ms` deben estar en ejecución antes de utilizar los endpoints de este microservicio. También vale la pena aclarar que para utilizar estos endpoints es necesario haber antes obtenido un token de acceso en el microservicio de users-ms por medio del endpoint de `/login` y usarlo en `/docs` y usarlo en la parte superior derecha.
 
 ## Funcionalidades principales
 
